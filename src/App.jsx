@@ -1,5 +1,6 @@
-import { Link, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Navbar from "./components/Navbar";
 
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -10,11 +11,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 function App() {
   return (
     <div style={{ padding: "16px" }}>
-      <nav style={{ display: "flex", gap: "12px", marginBottom: "16px" }}>
-        <Link to="/login">Login</Link>
-        <Link to="/register">Register</Link>
-        <Link to="/dashboard">Dashboard</Link>
-      </nav>
+      <Navbar />
 
       <Routes>
         <Route path="/" element={<LoginPage />} />
@@ -46,5 +43,6 @@ function App() {
 }
 
 export default App;
+
 
 
