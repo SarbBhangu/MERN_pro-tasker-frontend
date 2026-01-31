@@ -1,70 +1,50 @@
-import { useContext, useState } from "react";
-import { AuthContext } from "./context/AuthContext";
-import { loginUser } from "./api/authApi";
+import { Link, Route, Routes } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute";
+
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import DashboardPage from "./pages/DashboardPage";
+import ProjectPage from "./pages/ProjectPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
-  const { user, token, isLoggedIn, login, logout } = useContext(AuthContext);
-
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  const handleQuickLogin = async () => {
-    try {
-      setLoading(true);
-      setError("");
-
-      // Use an account that already exists in your database
-      const response = await loginUser({
-        email: "testuser1@example.com",
-        password: "password123",
-      });
-
-      // Save token + user into AuthContext + localStorage
-      login(response.token, response.user);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div style={{ padding: "16px" }}>
-      <h1>Pro-Tasker Frontend</h1>
+      <nav style={{ display: "flex", gap: "12px", marginBottom: "16px" }}>
+        <Link to="/login">Login</Link>
+        <Link to="/register">Register</Link>
+        <Link to="/dashboard">Dashboard</Link>
+      </nav>
 
-      <hr />
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
 
-      <h2>Auth Debug</h2>
-      <p>
-        <strong>Logged In:</strong> {isLoggedIn ? "Yes" : "No"}
-      </p>
-      <p>
-        <strong>Token Length:</strong> {token ? token.length : 0}
-      </p>
-      <p>
-        <strong>User:</strong> {user ? user.email : "None"}
-      </p>
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
 
-      {!isLoggedIn && (
-        <button onClick={handleQuickLogin} disabled={loading}>
-          {loading ? "Logging in..." : "Quick Login (Test)"}
-        </button>
-      )}
+        <Route
+          path="/projects/:id"
+          element={
+            <ProtectedRoute>
+              <ProjectPage />
+            </ProtectedRoute>
+          }
+        />
 
-      {isLoggedIn && (
-        <button onClick={logout} style={{ marginTop: "12px" }}>
-          Logout
-        </button>
-      )}
-
-      {error && (
-        <p style={{ marginTop: "12px" }}>
-          <strong>Error:</strong> {error}
-        </p>
-      )}
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
     </div>
   );
 }
 
 export default App;
+
 
