@@ -2,6 +2,12 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { createTask, deleteTask, getTasks, updateTask } from "../api/taskApi";
 
+function getBadgeClass(status) {
+  if (status === "Done") return "badge done";
+  if (status === "In Progress") return "badge progress";
+  return "badge todo";
+}
+
 export default function ProjectPage() {
   const { id: projectId } = useParams();
 
@@ -80,97 +86,122 @@ export default function ProjectPage() {
 
   return (
     <div>
-      <Link to="/dashboard">← Back to Dashboard</Link>
-
-      <h1>Project Tasks</h1>
-      <p>
-        <strong>Project ID:</strong> {projectId}
-      </p>
-
-      <h2>Create Task</h2>
-      <form onSubmit={handleCreateTask}>
-        <div>
-          <label>Title</label>
-          <br />
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-        </div>
-
-        <div>
-          <label>Description</label>
-          <br />
-          <input
-            type="text"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
-
-        <button type="submit" disabled={loading}>
-          {loading ? "Working..." : "Create Task"}
-        </button>
-      </form>
-
-      <hr />
-
-      <h2>Tasks</h2>
-
-      {loading && <p>Loading...</p>}
-
-      {error && (
-        <p>
-          <strong>Error:</strong> {error}
+      <div className="card">
+        <Link to="/dashboard">← Back to Dashboard</Link>
+        <h1>Project</h1>
+        <p className="small">
+          <strong>Project ID:</strong> {projectId}
         </p>
-      )}
+      </div>
 
-      {!loading && tasks.length === 0 && <p>No tasks yet.</p>}
+      <div className="spacer" />
 
-      <ul>
-        {tasks.map((task) => (
-          <li key={task._id} style={{ marginBottom: "12px" }}>
-            <div>
-              <strong>{task.title}</strong> — {task.status}
-            </div>
-            {task.description && <div>{task.description}</div>}
+      <div className="card">
+        <h2>Create Task</h2>
 
-            <div style={{ marginTop: "6px", display: "flex", gap: "8px" }}>
-              <button
-                type="button"
-                onClick={() => handleStatusChange(task._id, "To Do")}
-                disabled={loading}
-              >
-                To Do
-              </button>
-              <button
-                type="button"
-                onClick={() => handleStatusChange(task._id, "In Progress")}
-                disabled={loading}
-              >
-                In Progress
-              </button>
-              <button
-                type="button"
-                onClick={() => handleStatusChange(task._id, "Done")}
-                disabled={loading}
-              >
-                Done
-              </button>
+        <form className="form" onSubmit={handleCreateTask}>
+          <div>
+            <div className="label">Title</div>
+            <input
+              className="input"
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+            />
+          </div>
 
-              <button
-                type="button"
-                onClick={() => handleDeleteTask(task._id)}
-                disabled={loading}
-              >
-                Delete
-              </button>
-            </div>
-          </li>
-        ))}
-      </ul>
+          <div>
+            <div className="label">Description</div>
+            <input
+              className="input"
+              type="text"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
+
+          <button className="btn" type="submit" disabled={loading}>
+            {loading ? "Working..." : "Create Task"}
+          </button>
+        </form>
+
+        {error && (
+          <p className="error">
+            <strong>Error:</strong> {error}
+          </p>
+        )}
+      </div>
+
+      <div className="spacer" />
+
+      <div className="card">
+        <h2>Tasks</h2>
+
+        {loading && <p>Loading...</p>}
+
+        {!loading && tasks.length === 0 && <p>No tasks yet.</p>}
+
+        <ul className="list">
+          {tasks.map((task) => (
+            <li key={task._id} className="card">
+              <div className="row" style={{ justifyContent: "space-between" }}>
+                <div>
+                  <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                    <strong>{task.title}</strong>
+                    <span className={getBadgeClass(task.status)}>{task.status}</span>
+                  </div>
+
+                  {task.description ? (
+                    <p style={{ margin: "6px 0 0 0" }}>{task.description}</p>
+                  ) : (
+                    <p style={{ margin: "6px 0 0 0" }}>No description</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="spacer" />
+
+              <div className="row">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => handleStatusChange(task._id, "To Do")}
+                  disabled={loading}
+                >
+                  To Do
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => handleStatusChange(task._id, "In Progress")}
+                  disabled={loading}
+                >
+                  In Progress
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => handleStatusChange(task._id, "Done")}
+                  disabled={loading}
+                >
+                  Done
+                </button>
+
+                <button
+                  type="button"
+                  className="btn btn-danger"
+                  onClick={() => handleDeleteTask(task._id)}
+                  disabled={loading}
+                >
+                  Delete
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
+

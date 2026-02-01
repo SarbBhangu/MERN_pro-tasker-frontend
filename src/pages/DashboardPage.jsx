@@ -37,11 +37,9 @@ export default function DashboardPage() {
 
       await createProject({ name, description });
 
-      // Clear form
       setName("");
       setDescription("");
 
-      // Refresh list
       await loadProjects();
     } catch (err) {
       setError(err.message);
@@ -52,58 +50,82 @@ export default function DashboardPage() {
 
   return (
     <div>
-      <h1>Dashboard</h1>
+      <div className="card">
+        <h1>Dashboard</h1>
+        <p>Create projects and manage tasks inside each project.</p>
+      </div>
 
-      <h2>Create Project</h2>
-      <form onSubmit={handleCreateProject}>
-        <div>
-          <label>Project Name</label>
-          <br />
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </div>
+      <div className="spacer" />
 
-        <div>
-          <label>Description</label>
-          <br />
-          <input
-            type="text"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
+      <div className="card">
+        <h2>Create Project</h2>
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Working..." : "Create Project"}
-        </button>
-      </form>
+        <form className="form" onSubmit={handleCreateProject}>
+          <div>
+            <div className="label">Project Name</div>
+            <input
+              className="input"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
 
-      <hr />
+          <div>
+            <div className="label">Description</div>
+            <input
+              className="input"
+              type="text"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
 
-      <h2>My Projects</h2>
+          <button className="btn" type="submit" disabled={loading}>
+            {loading ? "Working..." : "Create Project"}
+          </button>
+        </form>
 
-      {loading && <p>Loading...</p>}
+        {error && (
+          <p className="error">
+            <strong>Error:</strong> {error}
+          </p>
+        )}
+      </div>
 
-      {error && (
-        <p>
-          <strong>Error:</strong> {error}
-        </p>
-      )}
+      <div className="spacer" />
 
-      {!loading && projects.length === 0 && <p>No projects yet.</p>}
+      <div className="card">
+        <h2>My Projects</h2>
 
-      <ul>
-        {projects.map((project) => (
-          <li key={project._id}>
-            <Link to={`/projects/${project._id}`}>{project.name}</Link>
-          </li>
-        ))}
-      </ul>
+        {loading && <p>Loading...</p>}
+
+        {!loading && projects.length === 0 && <p>No projects yet.</p>}
+
+        <ul className="list">
+          {projects.map((project) => (
+            <li key={project._id} className="card">
+              <div className="list-item">
+                <div>
+                  <strong>{project.name}</strong>
+                  {project.description ? (
+                    <p style={{ margin: "6px 0 0 0" }}>{project.description}</p>
+                  ) : (
+                    <p style={{ margin: "6px 0 0 0" }}>No description</p>
+                  )}
+                </div>
+
+                <Link className="btn btn-secondary" to={`/projects/${project._id}`}>
+                  Open
+                </Link>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
+
 

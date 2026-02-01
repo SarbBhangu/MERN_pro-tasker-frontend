@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { registerUser } from "../api/authApi";
 
@@ -21,11 +21,7 @@ export default function RegisterPage() {
       setError("");
 
       const response = await registerUser({ name, email, password });
-
-      // Save token + user globally
       login(response.token, response.user);
-
-      // Go to dashboard
       navigate("/dashboard");
     } catch (err) {
       setError(err.message);
@@ -35,14 +31,15 @@ export default function RegisterPage() {
   };
 
   return (
-    <div>
+    <div className="card">
       <h1>Register</h1>
+      <p>Create an account to start tracking projects and tasks.</p>
 
-      <form onSubmit={handleSubmit}>
+      <form className="form" onSubmit={handleSubmit}>
         <div>
-          <label>Name</label>
-          <br />
+          <div className="label">Name</div>
           <input
+            className="input"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -51,9 +48,9 @@ export default function RegisterPage() {
         </div>
 
         <div>
-          <label>Email</label>
-          <br />
+          <div className="label">Email</div>
           <input
+            className="input"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -62,9 +59,9 @@ export default function RegisterPage() {
         </div>
 
         <div>
-          <label>Password</label>
-          <br />
+          <div className="label">Password</div>
           <input
+            className="input"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -72,16 +69,22 @@ export default function RegisterPage() {
           />
         </div>
 
-        <button type="submit" disabled={loading}>
+        <button className="btn" type="submit" disabled={loading}>
           {loading ? "Creating account..." : "Register"}
         </button>
       </form>
 
+      <div className="spacer" />
+
       {error && (
-        <p>
+        <p className="error">
           <strong>Error:</strong> {error}
         </p>
       )}
+
+      <p>
+        Already have an account? <Link to="/login">Login</Link>
+      </p>
     </div>
   );
 }

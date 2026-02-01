@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { loginUser } from "../api/authApi";
 
@@ -20,11 +20,7 @@ export default function LoginPage() {
       setError("");
 
       const response = await loginUser({ email, password });
-
-      // Save token + user globally
       login(response.token, response.user);
-
-      // Go to dashboard
       navigate("/dashboard");
     } catch (err) {
       setError(err.message);
@@ -34,14 +30,15 @@ export default function LoginPage() {
   };
 
   return (
-    <div>
+    <div className="card">
       <h1>Login</h1>
+      <p>Log in to manage your projects and tasks.</p>
 
-      <form onSubmit={handleSubmit}>
+      <form className="form" onSubmit={handleSubmit}>
         <div>
-          <label>Email</label>
-          <br />
+          <div className="label">Email</div>
           <input
+            className="input"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -50,9 +47,9 @@ export default function LoginPage() {
         </div>
 
         <div>
-          <label>Password</label>
-          <br />
+          <div className="label">Password</div>
           <input
+            className="input"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -60,16 +57,22 @@ export default function LoginPage() {
           />
         </div>
 
-        <button type="submit" disabled={loading}>
+        <button className="btn" type="submit" disabled={loading}>
           {loading ? "Logging in..." : "Login"}
         </button>
       </form>
 
+      <div className="spacer" />
+
       {error && (
-        <p>
+        <p className="error">
           <strong>Error:</strong> {error}
         </p>
       )}
+
+      <p>
+        New here? <Link to="/register">Create an account</Link>
+      </p>
     </div>
   );
 }

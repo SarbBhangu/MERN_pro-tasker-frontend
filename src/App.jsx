@@ -10,7 +10,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   return (
-    <div style={{ padding: "16px" }}>
+    <div className="container">
       <Navbar />
 
       <Routes>
