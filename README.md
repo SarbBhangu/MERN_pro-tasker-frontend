@@ -20,7 +20,7 @@ https://mern-pro-tasker-backend.onrender.com
 A short walkthrough of the Pro-Tasker application, including frontend functionality, backend architecture, and security considerations.
 
 ▶️ Watch the presentation (Unlisted YouTube link):  
-https://www.youtube.com/watch?v=XXXXXXXX
+https://youtu.be/vlciZ4A-0-I
 
 ---
 
