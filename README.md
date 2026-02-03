@@ -15,6 +15,13 @@ https://mern-pro-tasker-frontend.onrender.com
 **Backend API:**  
 https://mern-pro-tasker-backend.onrender.com
 
+## 🎥 Project Presentation
+
+A short walkthrough of the Pro-Tasker application, including frontend functionality, backend architecture, and security considerations.
+
+▶️ Watch the presentation (Unlisted YouTube link):  
+https://www.youtube.com/watch?v=XXXXXXXX
+
 ---
 
 ## Project Overview
