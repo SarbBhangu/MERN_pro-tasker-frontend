@@ -9,6 +9,9 @@ The frontend communicates with a deployed Express + MongoDB backend via REST API
 
 ## Live Application
 
+**Backend GitHub Repo**
+https://github.com/SarbBhangu/MERN_pro-tasker-backend
+
 **Frontend (Live App):**  
 https://mern-pro-tasker-frontend.onrender.com
 
